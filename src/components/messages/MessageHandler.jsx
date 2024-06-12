@@ -7,7 +7,7 @@ function MessageHandler() {
 		try {
 			if (message !== '') {
 				const { data } = await axios.post(
-					'https://api.twilio.com/2010-04-01/Accounts/AC1b662ed8dae5c579ef3518661ce79935/Messages.json',
+					`https://api.twilio.com/2010-04-01/${process.env.TWILIO_SID}/Messages.json`,
 					{
 						From: 'whatsapp:+14155238886',
 						body: message,

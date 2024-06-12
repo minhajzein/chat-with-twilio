@@ -7,7 +7,7 @@ function ChatList() {
 		;(async () => {
 			try {
 				const { data } = await axios.get(
-					'https://api.twilio.com/2010-04-01/Accounts/AC1b662ed8dae5c579ef3518661ce79935.json'
+					`https://api.twilio.com/2010-04-01/Accounts/${process.env.TWILIO_SID}.json`
 				)
 				console.log(data)
 			} catch (error) {
