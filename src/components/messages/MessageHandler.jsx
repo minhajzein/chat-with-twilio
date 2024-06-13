@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useState } from 'react'
+import { SENDER, SID } from '../../config/config'
 
 function MessageHandler() {
 	const [message, setMessage] = useState('')
@@ -7,9 +8,9 @@ function MessageHandler() {
 		try {
 			if (message !== '') {
 				const { data } = await axios.post(
-					`https://api.twilio.com/2010-04-01/${process.env.TWILIO_SID}/Messages.json`,
+					`https://api.twilio.com/2010-04-01/${SID}/Messages.json`,
 					{
-						From: 'whatsapp:+14155238886',
+						From: SENDER,
 						body: message,
 						To: 'whatsapp:+917994507560',
 					},
