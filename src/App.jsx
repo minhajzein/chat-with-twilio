@@ -1,12 +1,13 @@
-import ChatConsole from './components/Chats/ChatConsole'
-import Conversations from './components/Conversations/Conversations'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import ContactRouter from './routes/ContactRouter'
 
 function App() {
 	return (
-		<div className='flex'>
-			<Conversations />
-			<ChatConsole />
-		</div>
+		<BrowserRouter>
+			<Routes>
+				<Route path='/*' element={<ContactRouter />} />
+			</Routes>
+		</BrowserRouter>
 	)
 }
 

@@ -1,9 +1,12 @@
-import React from 'react'
+const message = {}
+import RecievedMessage from './RecievedMessage'
+import SentMessage from './SentMessage'
 
 function MessageTile() {
 	return (
-		<div className='w-[50%] bg-slate-300 p-3 rounded-2xl rounded-bl-none'>
-			MessageTile
+		<div className='w-full flex flex-col gap-5'>
+			<RecievedMessage />
+			<SentMessage />
 		</div>
 	)
 }
