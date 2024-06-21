@@ -2,28 +2,27 @@ import { useState } from 'react'
 import SendIcon from '../../assets/svgs/send-icon.svg'
 import Smiley from '../../assets/svgs/Smiley.svg'
 import axios from 'axios'
+import { useParams } from 'react-router-dom'
 
 //imports........................................
 
 function MessageHandler() {
 	const [message, setMessage] = useState('')
-
+	const { telenumber } = useParams()
 	const handleSendMessage = async () => {
 		try {
-			const { data } = await axios.post(
-				'https://api.twilio.com/2010-04-01/Accounts/AC79d287e0d27809e3f14db0daa3a7c49f/Messages.json',
-				{
-					body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
-					from: 'whatsapp:+14122593961',
-					to: 'whatsapp:+917356986777',
-				},
-				{
-					headers: {
-						Authorization: 'aea50999e33499f0ae09402ccde7a238',
-					},
+			if (message !== '') {
+				const { data } = await axios.post(
+					'http://drscentapi.grohance.co.in/api/send',
+					{
+						body: message,
+						to: telenumber,
+					}
+				)
+				if (data.success) {
+					setMessage('')
 				}
-			)
-			console.log(data)
+			}
 		} catch (error) {
 			console.error(error)
 		}

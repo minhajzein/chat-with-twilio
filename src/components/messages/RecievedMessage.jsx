@@ -1,6 +1,6 @@
 import ProfileCircle from '../../assets/svgs/profile-circle.svg'
 
-function RecievedMessage() {
+function RecievedMessage({ date, body }) {
 	return (
 		<div className='w-full flex justify-start'>
 			<div className='max-w-[60%] h-auto flex items-end gap-2'>
@@ -11,15 +11,10 @@ function RecievedMessage() {
 						alt='profile-picture'
 					/>
 				</div>
-				<div className='flex max-w-[80%] flex-col gap-1 relative bg-[#EFEFEF] p-5 pb-8 rounded-3xl rounded-bl-none'>
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis
-						ipsam harum maxime odit corporis ratione ut, molestias cupiditate
-						corrupti perferendis laborum quisquam quia quis repellendus
-						voluptates. Maxime corrupti sapiente suscipit.
-					</p>
+				<div className='flex max-w-[80%] flex-col gap-1 relative bg-[#EFEFEF] p-5 pb-9 rounded-3xl rounded-bl-none'>
+					<p>{body}</p>
 					<span className='absolute right-4 bottom-4 text-sm opacity-50 w-full text-end'>
-						04:43
+						{date}
 					</span>
 				</div>
 			</div>
