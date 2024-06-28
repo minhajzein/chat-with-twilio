@@ -1,5 +1,7 @@
 import ProfileCircle from '../../assets/svgs/profile-circle.svg'
 
+//imports................................................................................................
+
 function RecievedMessage({ date, body }) {
 	return (
 		<div className='w-full flex justify-start'>

@@ -1,35 +1,34 @@
-import { useEffect, useState } from 'react'
 import MessageTile from '../messages/MessageTile'
-import axios from 'axios'
+import ChatListSkelton from '../../skeltons/chats/ChatListSkelton'
 import { useParams } from 'react-router-dom'
-import ChatListSkelton from '../../skeltons/ChatListSkelton'
+import { useGetMessagesQuery } from '../../redux/apiSlices/messageApiSlice'
+import { useRef } from 'react'
+
+//imports.................................................
 
 function ChatList() {
-	const [messages, setMessages] = useState([])
-	const [loading, setLoading] = useState(true)
 	const { telenumber } = useParams()
+	const { data, isSuccess, isLoading } = useGetMessagesQuery(telenumber, {
+		pollingInterval: 1000,
+		skipPollingIfUnfocused: true,
+	})
 
-	useEffect(() => {
-		;(async () => {
-			const { data } = await axios.get(
-				`http://drscentapi.grohance.co.in/api/messages/${telenumber}`
-			)
-			setMessages(data.messages)
-			window.scrollTo({
-				top: document.body.scrollHeight,
-				behavior: 'smooth',
-			})
-			setLoading(false)
-		})()
-	}, [telenumber])
+	const messagesEndRef = useRef(null)
 
-	return loading ? (
+	isSuccess && messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+
+	return isLoading ? (
 		<ChatListSkelton />
 	) : (
-		<div className='p-4 flex flex-col justify-end gap-5 w-full min-h-screen overflow-y-auto hover:scroll-auto'>
-			{messages.map(message => (
-				<MessageTile key={message.sid} message={message} />
+		<div className='p-4 flex flex-col justify-end gap-5 min-h-full'>
+			{data.messages.map(message => (
+				<MessageTile
+					key={message.sid}
+					message={message}
+					isLoading={isLoading}
+				/>
 			))}
+			<div ref={messagesEndRef} />
 		</div>
 	)
 }

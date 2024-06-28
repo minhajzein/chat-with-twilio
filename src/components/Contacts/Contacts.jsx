@@ -1,30 +1,26 @@
-import { useEffect, useState } from 'react'
+import { useGetContactsQuery } from '../../redux/apiSlices/contactApiSlice'
 import ContactTile from './ContactTile'
-import axios from 'axios'
+import ContactsSkelton from '../../skeltons/contacts/ContactsSkelton'
 
 //imports................................................................................................
 
 function Contacts() {
-	const [contacts, setContacts] = useState([])
+	const { data, isLoading, isSuccess, isError } = useGetContactsQuery()
 
-	useEffect(() => {
-		;(async () => {
-			try {
-				const { data } = await axios.get(
-					'http://drscentapi.grohance.co.in/api/contacts'
-				)
-				setContacts(data.contacts)
-			} catch (error) {
-				console.error(error)
-			}
-		})()
-	}, [])
-
-	return (
+	// const contacts = data?.contacts.filter(contact =>
+	// 	contact
+	// 		.split(':')[1]
+	// 		.search(/^(?:(?:+|0{0,2})91(s*[-]s*)?|[0]?)?[789]d{9}$/)
+	// )
+	// console.log(contacts)
+	return isLoading ? (
+		<ContactsSkelton />
+	) : (
 		<div className='w-full overflow-y-auto z-50 scrollbar-hidden hover:scroll-auto'>
-			{contacts.map(contact => (
-				<ContactTile key={contact} telenumber={contact} />
-			))}
+			{isSuccess &&
+				data?.contacts.map(contact => (
+					<ContactTile key={contact} telenumber={contact} />
+				))}
 		</div>
 	)
 }

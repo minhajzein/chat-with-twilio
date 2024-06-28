@@ -1,36 +1,44 @@
 import { useState } from 'react'
 import SendIcon from '../../assets/svgs/send-icon.svg'
 import Smiley from '../../assets/svgs/Smiley.svg'
-import axios from 'axios'
 import { useParams } from 'react-router-dom'
+import { useSendMessageMutation } from '../../redux/apiSlices/messageApiSlice'
+import { toast } from 'react-toastify'
 
 //imports........................................
 
 function MessageHandler() {
 	const [message, setMessage] = useState('')
 	const { telenumber } = useParams()
-	const handleSendMessage = async () => {
+	const [sendMessage, { isLoading, isSuccess }] = useSendMessageMutation()
+	const handleSendMessage = async e => {
+		e.preventDefault()
 		try {
 			if (message !== '') {
-				const { data } = await axios.post(
-					'http://drscentapi.grohance.co.in/api/send',
-					{
-						body: message,
-						to: telenumber,
-					}
-				)
+				const { data } = await sendMessage({
+					body: message,
+					to: telenumber,
+				})
 				if (data.success) {
 					setMessage('')
 				}
+			} else {
+				toast.error('please type a message')
 			}
 		} catch (error) {
 			console.error(error)
 		}
 	}
 	return (
-		<div className='sticky w-full bottom-0 p-10 flex gap-4 z-50 bg-[#EAEAEA]'>
+		<form
+			onSubmit={handleSendMessage}
+			className='w-full sticky bottom-0 p-10 flex gap-4 z-50 bg-[#EAEAEA]'
+		>
 			<div className='w-full relative'>
-				<button className='absolute left-3 top-1/2 -translate-y-1/2'>
+				<button
+					type='button'
+					className='absolute left-3 top-1/2 -translate-y-1/2'
+				>
 					<img src={Smiley} alt='smiley' />
 				</button>
 				<input
@@ -42,12 +50,12 @@ function MessageHandler() {
 				/>
 			</div>
 			<button
-				onClick={handleSendMessage}
+				disabled={isLoading}
 				className='px-3 rounded bg-white flex justify-center items-center'
 			>
 				<img src={SendIcon} alt='send' />
 			</button>
-		</div>
+		</form>
 	)
 }
 
